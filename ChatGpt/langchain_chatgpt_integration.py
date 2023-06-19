@@ -14,7 +14,7 @@ import langchain
 langchain.debug = True
 
 
-class LLMUtils:
+class ChatGPTUtils:
 
     def __init__(self) -> None:
 
@@ -29,39 +29,43 @@ class LLMUtils:
         self.docs = loader.load()
         return self.docs
         
-    def store_data_in_vector_store(self) -> FAISS:
+    def store_data_in_vector_store(self, chunk_size: int = 250, vector_store_type: str = "FAISS") -> None:
         documents = self.load_documents()
-        text_splitter = TokenTextSplitter(chunk_size=100, chunk_overlap=0)
+        text_splitter = TokenTextSplitter(chunk_size=chunk_size, chunk_overlap=0)
         docs = text_splitter.split_documents(documents)
         
-        db = FAISS.from_documents(docs, self.embeddings)
-        db.save_local("faiss_index")
+        if vector_store_type == "FAISS":
+            db = FAISS.from_documents(docs, self.embeddings)
+            db.save_local(f"{vector_store_type}_index")
 
     
-    def obtain_retriever_from_index(self) -> VectorStoreRetriever:
+    def obtain_retriever_from_index(self,num_relevant_text, vector_store_type="FAISS", min_score=0.1) -> VectorStoreRetriever:
          
-         db = FAISS.load_local(folder_path="faiss_index", embeddings=self.embeddings)
-         retriever = db.as_retriever(search_kwargs={"k": 15})
+         db = FAISS.load_local(folder_path=f"{vector_store_type}_index", embeddings=self.embeddings)
+         retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": min_score,"k": num_relevant_text})
 
          return retriever
     
-    def ask_question(self, query: str):
+    def ask_question(self, query: str, num_relevant_text: int = 5, 
+                     return_sources: bool = False, core_chains="stuff",
+                     vector_store_type="FAISS", min_score=0.1):
          
-         retriever = self.obtain_retriever_from_index()
+         retriever = self.obtain_retriever_from_index(num_relevant_text=num_relevant_text, vector_store_type=vector_store_type, min_score=min_score)
 
          retrieval_qa = RetrievalQA.from_chain_type(
             llm=self.llm, 
-            chain_type="stuff", 
+            chain_type=core_chains, 
             retriever=retriever, 
-            verbose=True
+            verbose=True,
+            return_source_documents=return_sources
         )
          
-         response = retrieval_qa.run(query)
+         response = retrieval_qa(query)
 
          return response
 
 if __name__ == "__main__":
-    util_obj = LLMUtils()
+    util_obj = ChatGPTUtils()
     query = "Why did Veena feel she did not belong in London?"
     start_time = time.time()
     print(util_obj.ask_question(query))
