@@ -1,4 +1,3 @@
-from langchain import PromptTemplate, LLMChain
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
@@ -14,7 +13,7 @@ import langchain
 langchain.debug = True
 
 
-class ChatGPTUtils:
+class SimpleRetrieverQA:
 
     def __init__(self) -> None:
 
@@ -50,9 +49,9 @@ class ChatGPTUtils:
                      return_sources: bool = False, core_chains="stuff",
                      vector_store_type="FAISS", min_score=0.1):
          
-         retriever = self.obtain_retriever_from_index(num_relevant_text=num_relevant_text, vector_store_type=vector_store_type, min_score=min_score)
+        retriever = self.obtain_retriever_from_index(num_relevant_text=num_relevant_text, vector_store_type=vector_store_type, min_score=min_score)
 
-         retrieval_qa = RetrievalQA.from_chain_type(
+        retrieval_qa = RetrievalQA.from_chain_type(
             llm=self.llm, 
             chain_type=core_chains, 
             retriever=retriever, 
@@ -60,12 +59,12 @@ class ChatGPTUtils:
             return_source_documents=return_sources
         )
          
-         response = retrieval_qa(query)
+        response = retrieval_qa(query)
 
-         return response
+        return response
 
 if __name__ == "__main__":
-    util_obj = ChatGPTUtils()
+    util_obj = SimpleRetrieverQA()
     query = "Why did Veena feel she did not belong in London?"
     start_time = time.time()
     print(util_obj.ask_question(query))
