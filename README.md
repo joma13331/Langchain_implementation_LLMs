@@ -5,6 +5,10 @@ In this project, we implement a Question Answering system using the LangChain fr
 
 The front-end allows to upload various documents, which are then stored in a local vector store. The user can then ask questions about the documents, and the system will return the most relevant answers.
 
+Question answering can be done in two ways:
+1. Using A Simple Retriever: This method answers one question at a time with no history of previously asked questions.
+2. Using a Conversational Retriever: This method allows to ask multiple questions in a conversation. The system will keep track of the previously asked questions and will try to answer the new question in the context of the previous questions.
+
 For testing purposes 5 articles are provided in the Docs folder on which questions can be asked.
 
 ## Installation
