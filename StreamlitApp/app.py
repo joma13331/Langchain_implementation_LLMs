@@ -69,7 +69,7 @@ elif selection == "Upload Documents":
 
     # a dropdown to select the type of vector store
     st.write("Select the type of vector store you want to create.")
-    vector_store_type = st.selectbox("Select the type of vector store", ["FAISS"])
+    vector_store_type = st.selectbox("Select the type of vector store", ["FAISS", "ElasticVectorSearch"])
 
 
     # A button to create the vector store
@@ -92,7 +92,7 @@ elif selection == "Upload Documents":
                 with open(os.path.join(folder_path, uploaded_file.name), "wb") as f:
                     f.write(uploaded_file.getbuffer())
             # Create a vector store out of the uploaded files
-            st.session_state.chatgpt_utils.store_data_in_vector_store(chunk_size=chunk_size, vector_store_type=vector_store_type)
+            SimpleRetrieverQA.store_data_in_vector_store(chunk_size=chunk_size, vector_store_type=vector_store_type)
             st.write("Vector store created successfully.")
 
 elif selection == "Ask Questions":
@@ -104,7 +104,7 @@ elif selection == "Ask Questions":
 
     # a dropdown to select the type of vector store
     st.write("Select the vector store you want to access.")
-    vector_store_type = st.selectbox("Select the vector store you want to access.", ["FAISS"])
+    vector_store_type = st.selectbox("Select the vector store you want to access.", ["FAISS", "ElasticVectorSearch"])
 
     # An input box to enter the number of relevant text to consider for the answer
     st.write("Enter the number of relevant text to consider for the answer.")
@@ -133,7 +133,7 @@ elif selection == "Ask Questions":
     # If the user clicks the ask question button
     if ask_question:
         # If the user has not created a vector store
-        if not os.path.exists(f"{vector_store_type}_index"):
+        if not os.path.exists(f"{vector_store_type}_index") and vector_store_type == "FAISS":
             st.write("Please create a vector store first.")
         # If the user has created a vector store
         else:
@@ -162,7 +162,7 @@ elif selection == "Ask Questions Using Conversational Approach":
 
     # a dropdown to select the type of vector store
     st.write("Select the vector store you want to access.")
-    vector_store_type = st.selectbox("Select the vector store you want to access.", ["FAISS"])
+    vector_store_type = st.selectbox("Select the vector store you want to access.", ["FAISS", "ElasticVectorSearch"])
 
     # An input box to enter the number of relevant text to consider for the answer
     st.write("Enter the number of relevant text to consider for the answer.")
@@ -188,7 +188,7 @@ elif selection == "Ask Questions Using Conversational Approach":
     # If the user clicks the ask question button
     if ask_question:
         # If the user has not created a vector store
-        if not os.path.exists(f"{vector_store_type}_index"):
+        if not os.path.exists(f"{vector_store_type}_index") and vector_store_type == "FAISS":
             st.write("Please create a vector store first.")
         # If the user has created a vector store
         else:

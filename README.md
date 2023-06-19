@@ -20,6 +20,10 @@ For testing purposes 5 articles are provided in the Docs folder on which questio
 ```
 streamlit run StreamlitApp/app.py
 ```
+5. If you want to use ElasticSearch and it is not installed on your system, you can install it using docker. Run the following command to install ElasticSearch:
+```
+docker run --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:8.8.0
+```
 
 ## References
 
