@@ -40,10 +40,10 @@ class SimpleRetrieverQA:
     
     def obtain_retriever_from_index(self,num_relevant_text, vector_store_type="FAISS", min_score=0.1) -> VectorStoreRetriever:
          
-         db = FAISS.load_local(folder_path=f"{vector_store_type}_index", embeddings=self.embeddings)
-         retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": min_score,"k": num_relevant_text})
+        db = FAISS.load_local(folder_path=f"{vector_store_type}_index", embeddings=self.embeddings)
+        retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": min_score,"k": num_relevant_text})
 
-         return retriever
+        return retriever
     
     def ask_question(self, query: str, num_relevant_text: int = 5, 
                      return_sources: bool = False, core_chains="stuff",

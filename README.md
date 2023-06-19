@@ -16,7 +16,7 @@ For testing purposes 5 articles are provided in the Docs folder on which questio
 1. Clone the repository
 2. Create a text file names openai_ai_key.txt in the root directory of the project. This file should contain your OpenAI API key.
 3. Create a virtual environment and install the requirements mentioned in requirements.txt.
-4. Run the following command to start the streamlit app:
+4. Run the following command from the root directory of the project to start the streamlit app:
 ```
 streamlit run StreamlitApp/app.py
 ```
@@ -29,6 +29,8 @@ streamlit run StreamlitApp/app.py
 4. [Vector Stores](https://python.langchain.com/docs/modules/data_connection/vectorstores/)
 5. [Vector store-backed retriever](https://python.langchain.com/docs/modules/data_connection/retrievers/how_to/vectorstore)
 6. [Chain Types](https://python.langchain.com/docs/modules/chains/document/)
+7. [Conversation buffer memory](https://python.langchain.com/docs/modules/memory/how_to/buffer)
+8. [Conversational Retrieval QA](https://python.langchain.com/docs/modules/chains/popular/chat_vector_db)
 
 
 
