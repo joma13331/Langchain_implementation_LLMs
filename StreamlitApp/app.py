@@ -92,7 +92,7 @@ elif selection == "Upload Documents":
                 with open(os.path.join(folder_path, uploaded_file.name), "wb") as f:
                     f.write(uploaded_file.getbuffer())
             # Create a vector store out of the uploaded files
-            SimpleRetrieverQA.store_data_in_vector_store(chunk_size=chunk_size, vector_store_type=vector_store_type)
+            SimpleRetrieverQA().store_data_in_vector_store(chunk_size=chunk_size, vector_store_type=vector_store_type)
             st.write("Vector store created successfully.")
 
 elif selection == "Ask Questions":
